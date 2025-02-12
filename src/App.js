@@ -7,6 +7,7 @@ import Game1 from "./components/Game1";
 import Game2 from "./components/Game2";
 import Game3 from "./components/Game3";
 import RankingPage from "./components/RankingPage";
+import Info from "./components/User";
 
 const App = () => {
   return (
@@ -14,8 +15,9 @@ const App = () => {
       <Routes>
         {/* Ruta predeterminada para Login */}
         <Route path="/" element={<LoginRegister />} />
-        <Route path="/user/:userId" element={<HomePage />} />
+        <Route path="/user/:userId/" element={<HomePage />} />
         <Route path="/user/:userId/game/:gameMode" element={<ExerciseList />} />
+        <Route path="/user/:userId/info" element={<Info />} />
         <Route path="/user/:userId/game/game1/exercise/:exerciseId" element={<Game1 />} />
         <Route path="/user/:userId/game/game2/exercise/:exerciseId" element={<Game2 />} />
         <Route path="/user/:userId/game/game3/exercise/:exerciseId" element={<Game3 />} />

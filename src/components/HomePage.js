@@ -51,7 +51,7 @@ const HomePage = () => {
   <ul className="nav-links">
     <li><Link to={`/user/${userId}`}><i className="fas fa-home"></i> Home</Link></li>
     <li><Link to={`/user/${userId}/ranking`}><i className="fas fa-trophy"></i> Ranking</Link></li>
-    <li><Link to="#profile"><i className="fas fa-user"></i> Profile</Link></li>
+    <li><Link to={`/user/${userId}/info`}><i className="fas fa-user"></i> Profile</Link></li>
     <li><Link to="/"><i className="fas fa-cogs"></i> Exit</Link></li>
   </ul>
 </nav>
@@ -85,15 +85,7 @@ const HomePage = () => {
         <p className="game-description">Description: In this mode, you need to select the correct answer based on a given problem.</p>
       </div>
 
-      <div>
-        <button 
-          className="user-info-toggle" 
-          onClick={handleShowUserInfo}
-        >
-          {showUserInfo ? "Hide User Info" : "Show User Info"}
-        </button>
-        {showUserInfo && user && <UserInfo user={user} />}
-      </div>
+      
     </div>
     </div> 
   );

@@ -127,8 +127,9 @@ const removeTripleBackticksContent = (description) => {
   <ul className="nav-links">
     <li><Link to={`/user/${userId}`}><i className="fas fa-home"></i> Home</Link></li>
     <li><Link to={`/user/${userId}/game/game3`}><i className="fas fa-gamepad"></i> Juegos</Link></li>
-    <li><Link to={`/user/${userId}/ranking`}><i className="fas fa-trophy"></i> Ranking</Link></li>
-    <li><Link to="#profile"><i className="fas fa-user"></i> Perfil</Link></li>
+    <li><Link to={`/user/${userId}/ranking`}><i className="fas fa-trophy"></i> Ranking</Link></li>    
+    <li><Link to={/user/`${userId}/info`}><i className="fas fa-user"></i> Profile</Link></li>
+    
     <li><Link to="/"><i className="fas fa-cogs"></i> Exit</Link></li>
   </ul>
 </nav>
