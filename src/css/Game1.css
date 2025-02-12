@@ -1,0 +1,177 @@
+/* Estilos para el Navbar */
+.game-navbar {
+  background-color: #282c34;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.game-navbar .logo {
+  font-size: 1.5rem;
+  color: #017797;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.game-navbar .nav-links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.game-navbar .nav-links li {
+  margin: 0 15px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.game-navbar .nav-links li a {
+  color: #017797;
+  text-decoration: none;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+}
+
+.game-navbar .nav-links li a i {
+  margin-right: 8px;
+}
+
+.game-navbar .nav-links li:hover {
+  transform: scale(1.1);
+  color: #ffac33; /* Color de resaltado */
+}
+
+.game-navbar .nav-links li a:hover {
+  color: #ffac33; /* Color al pasar el mouse */
+}
+
+.game-navbar .nav-links li:active {
+  transform: scale(0.95);
+}
+
+
+
+/* Game1.css */
+.exercise-container {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  padding: 20px;
+  border-radius: 10px;
+  color: #333;
+  max-width: 800px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.exercise-info {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.exercise-info h1 {
+  font-size: 2.5rem;
+  color: #ff6b6b;
+}
+
+.exercise-info p {
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  border-radius: 5px;
+  color: #555;
+}
+
+.exercise-code {
+  margin: 20px 0;
+}
+
+.exercise-code h2 {
+  font-size: 1.8rem;
+  color: #1dd1a1;
+}
+
+.code-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.code-line {
+  padding: 10px;
+  background: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: move;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.code-line:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.completion-button button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.completion-button button:hover {
+  background: #fa5252;
+}
+
+.result-modal {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #ff6b6b;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.result-modal p {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.result-modal button {
+  margin: 5px;
+  padding: 10px 15px;
+  background: #1dd1a1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.result-modal button:hover {
+  background: #10ac84;
+}
+
+/* Keyframe Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
