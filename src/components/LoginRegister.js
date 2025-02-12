@@ -22,13 +22,17 @@ const LoginRegister = () => {
     try {
       if (isLogin) {
         // Inicio de sesión
+        console.log(1);
         const res = await axios.post("/users/login", {
             email: formData.email,
             password: formData.password,
         });
+        console.log(2);
         
         // Muestra el mensaje de éxito en la página
         setMessage("Inicio de sesión exitoso");
+        console.log(3);
+
         setMessageType("success");
         localStorage.setItem("token", res.data.token); // Guarda el token
 
