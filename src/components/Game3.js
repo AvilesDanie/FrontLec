@@ -158,7 +158,7 @@ const Game3 = () => {
           </p>
         </div>
 
-        <div id="solutions-container" className="solutions">
+        <div id="solutions-container" className="solutions" translate='no'>
           <h2>Select the correct solution:</h2>
           <br />
           <br />

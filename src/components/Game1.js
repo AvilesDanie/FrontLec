@@ -159,6 +159,7 @@ const Game1Exercise = () => {
                   handleLineMove(fromIndex, index);
                 }}
                 onDragOver={(e) => e.preventDefault()}
+                translate='no'
               >
                 {line}
               </div>

@@ -166,12 +166,12 @@ const Game2Exercise = () => {
           </p>
         </div>
 
-        <div id="exercise-code" className="exercise-code">
+        <div id="exercise-code" className="exercise-code" translate='no'>
           <h2>Python Code</h2>
           <pre id="code-content">{modifiedCode || "Cargando código..."}</pre>
         </div>
 
-        <div id="options-container" className="options">
+        <div id="options-container" className="options" translate='no'>
           {options.map((option, index) => (
             <button
               key={index}
