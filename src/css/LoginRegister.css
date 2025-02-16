@@ -73,29 +73,54 @@
     padding: 20px;
     overflow: hidden;
 }
-.btn-box{
+/* Estilos para los botones */
+.btn-box {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin-top: 20px;
-}
-.btn{
+  }
+  
+  .btn {
     font-weight: 500;
-    padding: 5px 30px;
+    padding: 10px 30px; /* Aumentar el padding para hacerlos más grandes */
     border: none;
     border-radius: 30px;
     background: rgba(255, 255, 255, 0.2);
     color: #fff;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    transition: .2s;
-}
-.btn-1{
+    transition: 0.3s;
+    border: 2px solid transparent; /* Añadir un borde transparente */
+  }
+  
+  .btn-1 {
     background: #21264d;
-}
-.btn:hover{
+    border-color: #21264d; /* Borde para el botón de Login */
+  }
+  
+  .btn-2 {
+    background: #4a90e2; /* Nuevo color para el botón de Register */
+    border-color: #4a90e2; /* Borde para el botón de Register */
+  }
+  
+  .btn:hover {
     opacity: 0.85;
-}
+    transform: scale(1.05); /* Efecto de escala al pasar el mouse */
+  }
+  
+  /* Estilo para el botón activo */
+  .btn.active {
+    background: #21264d; /* Color más intenso para el botón activo */
+    border-color: #fff; /* Borde blanco para resaltar */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Sombra para resaltar */
+  }
+  
+  /* Estilo para el botón no activo */
+  .btn:not(.active) {
+    background: rgba(255, 255, 255, 0.2); /* Fondo más claro para el botón no activo */
+    border-color: rgba(255, 255, 255, 0.5); /* Borde más claro */
+  }
 /* LOGIN FORM */
 .login-form{
     position: absolute;

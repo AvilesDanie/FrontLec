@@ -120,14 +120,14 @@ const LoginRegister = () => {
       <div className="col form-col-2">
         <div className="btn-box">
           <button
-            className={`btn btn-1 ${isLogin ? "active" : ""}`}
+            className={`btn btn-1 ${isLogin ? "active" : ""} text-white`}
             id="login"
             onClick={() => handleSwitchForm("login")}
           >
             Login
           </button>
           <button
-            className={`btn btn-2 ${!isLogin ? "active" : ""}`}
+            className={`btn btn-2 ${!isLogin ? "active" : ""} text-white`}
             id="register"
             onClick={() => handleSwitchForm("register")}
           >
