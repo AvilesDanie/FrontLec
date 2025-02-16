@@ -128,21 +128,29 @@ const Game1Exercise = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      <div className="exercise-container">
-        <div className="exercise-info">
-          <h1>{exerciseDetails?.name || 'Exercise'}</h1>
-          <p>
-            <div dangerouslySetInnerHTML={{ __html: removeTripleBackticksContent(exerciseDetails?.description) || 'No Description Available' }} />
+    <div id="exercise-page">
+      <div id="exercise-container" className="exercise-container">
+        {/* Información del ejercicio */}
+        <div id="exercise-info" className="exercise-info">
+          <h1 id="exercise-name">{exerciseDetails?.name || 'Exercise'}</h1>
+          <p id="exercise-description">
+            <div
+              id="exercise-description-content"
+              dangerouslySetInnerHTML={{
+                __html: removeTripleBackticksContent(exerciseDetails?.description) || 'No Description Available',
+              }}
+            />
           </p>
         </div>
 
-        <div className="exercise-code">
-          <h2>Arrange the Code</h2>
-          <div className="code-lines">
+        {/* Sección de código arrastrable */}
+        <div id="exercise-code" className="exercise-code">
+          <h2 id="code-title">Arrange the Code</h2>
+          <div id="code-lines" className="code-lines">
             {lines.map((line, index) => (
               <div
                 key={index}
+                id={`code-line-${index}`}
                 className="code-line"
                 draggable
                 onDragStart={(e) => e.dataTransfer.setData('index', index)}
@@ -158,8 +166,10 @@ const Game1Exercise = () => {
           </div>
         </div>
 
-        <div className="completion-button">
+        {/* Botón de envío */}
+        <div id="completion-button" className="completion-button">
           <button
+            id="submit-button"
             onClick={() => {
               if (checkAnswer()) {
                 handleGameCompletion(true);
@@ -173,18 +183,25 @@ const Game1Exercise = () => {
           </button>
         </div>
 
+        {/* Modal de resultado */}
         {gameResult && (
-          <div className="result-modal">
+          <div id="result-modal" className="result-modal">
             {gameResult === 'win' ? (
               <>
-                <p>🎉 You won! 🎉</p>
-                <button onClick={goToExerciseList}>Back to the list of exercises</button>
+                <p id="win-message">🎉 You won! 🎉</p>
+                <button id="back-to-list-button-win" onClick={goToExerciseList}>
+                  Back to the list of exercises
+                </button>
               </>
             ) : (
               <>
-                <p>😢 You lost! 😢</p>
-                <button onClick={restartGame}>Retry</button>
-                <button onClick={goToExerciseList}>Back to the list of exercises</button>
+                <p id="lose-message">😢 You lost! 😢</p>
+                <button id="retry-button" onClick={restartGame}>
+                  Retry
+                </button>
+                <button id="back-to-list-button-lose" onClick={goToExerciseList}>
+                  Back to the list of exercises
+                </button>
               </>
             )}
           </div>

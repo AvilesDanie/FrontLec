@@ -28,11 +28,12 @@ const Info = () => {
   if (error) return <p className="error-message">{error}</p>;
 
   return (
-    <div className="info-container">
-      <div className="user-info-section">
+    <div id="info-container" className="info-container">
+      <div id="user-info-section" className="user-info-section">
         <UserInfo user={user} />
       </div>
     </div>
+
   );
 };
 

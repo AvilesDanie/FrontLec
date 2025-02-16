@@ -61,21 +61,22 @@ const ExerciseList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
+    <div id="exercise-list-page">
       {/* Usar el componente NavBar */}
       <NavBar userId={userId} />
-      <div className="exercise-list-container">
-        <h1>{gameMode} - Recommended Exercises</h1>
-        <ul>
+      <div id="exercise-list-container" className="exercise-list-container">
+        <h1 id="exercise-list-title">{gameMode} - Recommended Exercises</h1>
+        <ul id="exercise-list">
           {exercises.map((exercise) => {
             const isCompleted = isExerciseCompleted(exercise._id); // Verificar si el ejercicio está completado
             return (
-              <li key={exercise.codewarsId} className="position-relative">
-                <h3>{exercise.name || "No Name Available"}</h3>
-                <p>
+              <li key={exercise.codewarsId} id={`exercise-${exercise.codewarsId}`} className="position-relative">
+                <h3 id={`exercise-name-${exercise.codewarsId}`}>{exercise.name || "No Name Available"}</h3>
+                <p id={`exercise-description-${exercise.codewarsId}`}>
                   <div>
                     {/* Renderizamos el HTML usando dangerouslySetInnerHTML */}
                     <div
+                      id={`exercise-description-content-${exercise.codewarsId}`}
                       dangerouslySetInnerHTML={{
                         __html: removeTripleBackticksContent(exercise.description),
                       }}
@@ -83,16 +84,17 @@ const ExerciseList = () => {
                   </div>
                 </p>
                 {exercise.priority > 0 && (
-                  <p className="priority-high">Recommended Exercise.</p>
+                  <p id={`exercise-priority-${exercise.codewarsId}`} className="priority-high">Recommended Exercise.</p>
                 )}
                 {/* Mostrar el ícono de "visto" si el ejercicio está completado */}
                 {isCompleted && (
-                  <div className="position-absolute bottom-0 end-0 m-2">
+                  <div id={`exercise-completed-icon-${exercise.codewarsId}`} className="position-absolute bottom-0 end-0 m-2">
                     <i className="bi bi-check-circle-fill text-success" style={{ fontSize: '24px' }}></i>
                   </div>
                 )}
                 {/* Cambiar el texto y el color del botón si el ejercicio está completado */}
                 <button
+                  id={`exercise-button-${exercise.codewarsId}`}
                   className={`btn ${isCompleted ? "btn-success" : "btn-primary"}`}
                   onClick={() => handleExerciseSelect(exercise.codewarsId)}
                 >

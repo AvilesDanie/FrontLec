@@ -150,25 +150,33 @@ const Game2Exercise = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      <div className="exercise-container">
-        <div className="exercise-info">
+    <div id="exercise-page">
+      <div id="exercise-container" className="exercise-container">
+        <div id="exercise-info" className="exercise-info">
           <h1>{exerciseDetails?.name}</h1>
           <p>
-            <div dangerouslySetInnerHTML={{ __html: removeTripleBackticksContent(exerciseDetails?.description) || 'No Description Available' }} />
+            <div
+              id="exercise-description"
+              dangerouslySetInnerHTML={{
+                __html:
+                  removeTripleBackticksContent(exerciseDetails?.description) ||
+                  "No Description Available",
+              }}
+            />
           </p>
         </div>
 
-        <div className="exercise-code">
+        <div id="exercise-code" className="exercise-code">
           <h2>Python Code</h2>
-          <pre>{modifiedCode || 'Cargando código...'}</pre>
+          <pre id="code-content">{modifiedCode || "Cargando código..."}</pre>
         </div>
 
-        <div className="options">
+        <div id="options-container" className="options">
           {options.map((option, index) => (
             <button
               key={index}
-              className={`option ${selectedOption === option ? 'selected' : ''}`}
+              id={`option-${index}`}
+              className={`option ${selectedOption === option ? "selected" : ""}`}
               onClick={() => handleOptionSelect(option)}
             >
               {option}
@@ -177,18 +185,26 @@ const Game2Exercise = () => {
         </div>
 
         {gameResult && (
-          <div className="result-modal">
-            {gameResult === 'win' ? (
+          <div id="result-modal" className="result-modal">
+            {gameResult === "win" ? (
               <p>Correct! You have completed the exercise.</p>
             ) : (
               <p>Incorrect! Please try again.</p>
             )}
-            <button onClick={restartGame}>Retry</button>
-            <button onClick={() => navigate(`/user/${userId}/game/game2`)}>Back to the list of exercises</button>
+            <button id="retry-button" onClick={restartGame}>
+              Retry
+            </button>
+            <button
+              id="back-button"
+              onClick={() => navigate(`/user/${userId}/game/game2`)}
+            >
+              Back to the list of exercises
+            </button>
           </div>
         )}
       </div>
     </div>
+
   );
 };
 

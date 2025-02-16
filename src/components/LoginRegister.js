@@ -107,35 +107,38 @@ const LoginRegister = () => {
   }, []);
 
   return (
-    <div className="form-container">
-      <div className="col form-col-1">
-        <div className="image-layer">
-          <img src={whiteOutline} alt="Outline" className="form-image-main" />
-          <img src={cohete} alt="Cohete" className="form-image cohete" />
+    <div id="form-container" className="form-container">
+      <div id="form-col-1" className="col form-col-1">
+        <div id="image-layer" className="image-layer">
+          <img id="outline-image" src={whiteOutline} alt="Outline" className="form-image-main" />
+          <img id="rocket-image" src={cohete} alt="Cohete" className="form-image cohete" />
         </div>
-        <p className="featured-words">
+        <p id="featured-words" className="featured-words">
           <br /> You are about to enter a page that will help you with your needs.
         </p>
       </div>
-      <div className="col form-col-2">
-        <div className="btn-box">
+
+      <div id="form-col-2" className="col form-col-2">
+        <div id="btn-box" className="btn-box">
           <button
-            className={`btn btn-1 ${isLogin ? "active" : ""} text-white`}
-            id="login"
+            id="login-btn"
+            className={`btn1 btn-1 ${isLogin ? "active" : ""} text-white`}
             onClick={() => handleSwitchForm("login")}
           >
             Login
           </button>
           <button
-            className={`btn btn-2 ${!isLogin ? "active" : ""} text-white`}
-            id="register"
+            id="register-btn"
+            className={`btn1 btn-2 ${!isLogin ? "active" : ""} text-white`}
             onClick={() => handleSwitchForm("register")}
           >
             Register
           </button>
         </div>
 
+        {/* Login Form */}
         <form
+          id="login-form"
           className="login-form"
           style={{
             left: isLogin ? "50%" : "150%",
@@ -143,12 +146,13 @@ const LoginRegister = () => {
           }}
           onSubmit={handleSubmit}
         >
-          <div className="form-title">
+          <div id="login-form-title" className="form-title">
             <span>Login</span>
           </div>
-          <div className="form-inputs">
-            <div className="input-box">
+          <div id="login-form-inputs" className="form-inputs">
+            <div id="login-email-box" className="input-box">
               <input
+                id="login-email"
                 type="email"
                 name="email"
                 className="input-field"
@@ -158,8 +162,9 @@ const LoginRegister = () => {
               />
               <i className="bx bx-envelope icon"></i>
             </div>
-            <div className="input-box">
+            <div id="login-password-box" className="input-box">
               <input
+                id="login-password"
                 type="password"
                 name="password"
                 className="input-field"
@@ -169,13 +174,13 @@ const LoginRegister = () => {
               />
               <i className="bx bx-lock-alt icon"></i>
             </div>
-            <div className="input-box">
-              <button className="input-submit">
+            <div id="login-submit-box" className="input-box">
+              <button id="login-submit" className="input-submit">
                 <span>Login</span>
                 <i className="bx bx-right-arrow-alt"></i>
               </button>
               {message && (
-                <p className={`message ${messageType === "error" ? "error" : "success"}`}>
+                <p id="login-message" className={`message ${messageType === "error" ? "error" : "success"}`}>
                   {message}
                 </p>
               )}
@@ -183,7 +188,9 @@ const LoginRegister = () => {
           </div>
         </form>
 
+        {/* Register Form */}
         <form
+          id="register-form"
           className="register-form"
           style={{
             left: isLogin ? "-50%" : "50%",
@@ -191,12 +198,13 @@ const LoginRegister = () => {
           }}
           onSubmit={handleSubmit}
         >
-          <div className="form-title">
+          <div id="register-form-title" className="form-title">
             <span>Create Account</span>
           </div>
-          <div className="form-inputs">
-            <div className="input-box">
+          <div id="register-form-inputs" className="form-inputs">
+            <div id="register-username-box" className="input-box">
               <input
+                id="register-username"
                 type="text"
                 name="username"
                 className="input-field"
@@ -206,8 +214,9 @@ const LoginRegister = () => {
               />
               <i className="bx bx-user icon"></i>
             </div>
-            <div className="input-box">
+            <div id="register-email-box" className="input-box">
               <input
+                id="register-email"
                 type="email"
                 name="email"
                 className="input-field"
@@ -217,8 +226,9 @@ const LoginRegister = () => {
               />
               <i className="bx bx-envelope icon"></i>
             </div>
-            <div className="input-box">
+            <div id="register-password-box" className="input-box">
               <input
+                id="register-password"
                 type="password"
                 name="password"
                 className="input-field"
@@ -228,13 +238,13 @@ const LoginRegister = () => {
               />
               <i className="bx bx-lock-alt icon"></i>
             </div>
-            <div className="input-box">
-              <button className="input-submit">
+            <div id="register-submit-box" className="input-box">
+              <button id="register-submit" className="input-submit">
                 <span>Register</span>
                 <i className="bx bx-right-arrow-alt"></i>
               </button>
               {message && (
-                <p className={`message ${messageType === "error" ? "error" : "success"}`}>
+                <p id="register-message" className={`message ${messageType === "error" ? "error" : "success"}`}>
                   {message}
                 </p>
               )}
@@ -243,6 +253,7 @@ const LoginRegister = () => {
         </form>
       </div>
     </div>
+
   );
 };
 

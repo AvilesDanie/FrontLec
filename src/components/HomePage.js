@@ -41,22 +41,27 @@ const HomePage = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="home-page bg-dark text-white min-vh-100 p-3">
+    <div id="home-page" className="home-page bg-dark text-white min-vh-100 p-3">
       {/* Contenedor principal */}
-      <div className="container mt-5">
-        <h1 className="text-center mb-4">Choose a Game Mode</h1>
+      <div id="main-container" className="container mt-5">
+        <h1 id="title" className="text-center mb-4">Choose a Game Mode</h1>
 
         {/* Fila para los botones de selección de juego */}
-        <div className="row justify-content-center">
-          <div className="col-md-6 col-lg-4 mb-4">
+        <div id="game-modes-row" className="row justify-content-center">
+          <div id="mode-1" className="col-md-6 col-lg-4 mb-4">
             <div className="card bg-secondary text-white game-card">
               <div className="card-body">
-                <h5 className="card-title">Mode 1: Ordering Code Lines</h5>
-                <p className="card-text">In this mode, you'll have to order code lines to complete the function.</p>
+                <h5 id="mode-1-title" className="card-title">
+                  Mode 1: Ordering Code Lines
+                </h5>
+                <p id="mode-1-description" className="card-text">
+                  In this mode, you'll have to order code lines to complete the function.
+                </p>
                 <button
+                  id="mode-1-button"
                   className="btn btn-primary btn-block"
-                  style={{ backgroundColor: '#007bff', borderColor: '#007bff' }}
-                  onClick={() => handleGameSelection('game1')}
+                  style={{ backgroundColor: "#007bff", borderColor: "#007bff" }}
+                  onClick={() => handleGameSelection("game1")}
                 >
                   Play Now
                 </button>
@@ -64,15 +69,20 @@ const HomePage = () => {
             </div>
           </div>
 
-          <div className="col-md-6 col-lg-4 mb-4">
+          <div id="mode-2" className="col-md-6 col-lg-4 mb-4">
             <div className="card bg-secondary text-white game-card">
               <div className="card-body">
-                <h5 className="card-title">Mode 2: Completing Missing Code</h5>
-                <p className="card-text">In this mode, you need to fill in the missing parts of a code snippet.</p>
+                <h5 id="mode-2-title" className="card-title">
+                  Mode 2: Completing Missing Code
+                </h5>
+                <p id="mode-2-description" className="card-text">
+                  In this mode, you need to fill in the missing parts of a code snippet.
+                </p>
                 <button
+                  id="mode-2-button"
                   className="btn btn-success btn-block"
-                  style={{ backgroundColor: '#28a745', borderColor: '#28a745' }}
-                  onClick={() => handleGameSelection('game2')}
+                  style={{ backgroundColor: "#28a745", borderColor: "#28a745" }}
+                  onClick={() => handleGameSelection("game2")}
                 >
                   Play Now
                 </button>
@@ -80,15 +90,24 @@ const HomePage = () => {
             </div>
           </div>
 
-          <div className="col-md-6 col-lg-4 mb-4">
+          <div id="mode-3" className="col-md-6 col-lg-4 mb-4">
             <div className="card bg-secondary text-white game-card">
               <div className="card-body">
-                <h5 className="card-title">Mode 3: Answer Selection</h5>
-                <p className="card-text">In this mode, you need to select the correct answer based on a given problem.</p>
+                <h5 id="mode-3-title" className="card-title">
+                  Mode 3: Answer Selection
+                </h5>
+                <p id="mode-3-description" className="card-text">
+                  In this mode, you need to select the correct answer based on a given problem.
+                </p>
                 <button
+                  id="mode-3-button"
                   className="btn btn-warning btn-block"
-                  style={{ backgroundColor: '#ffc107', borderColor: '#ffc107', color: '#000' }}
-                  onClick={() => handleGameSelection('game3')}
+                  style={{
+                    backgroundColor: "#ffc107",
+                    borderColor: "#ffc107",
+                    color: "#000",
+                  }}
+                  onClick={() => handleGameSelection("game3")}
                 >
                   Play Now
                 </button>
@@ -98,18 +117,20 @@ const HomePage = () => {
         </div>
 
         {/* Imagen temática */}
-        <div className="text-center mt-5">
+        <div id="theme-image-container" className="text-center mt-5">
           <img
+            id="theme-image"
             src="https://cdn.dribbble.com/userupload/19631674/file/original-fff325dde9f378ce681b4c9810a1f7fd.gif"
             alt="Game Theme"
             className="img-fluid rounded"
           />
-          <p className="text-muted mt-3">Explore the world of coding games!</p>
+          <p id="theme-description" className="text-muted mt-3">
+            Explore the world of coding games!
+          </p>
         </div>
-
-
       </div>
     </div>
+
   );
 };
 

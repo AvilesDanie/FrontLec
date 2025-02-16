@@ -15,3 +15,7 @@ footer {
     color: #e0a800; /* Color amarillo oscuro al hacer hover */
     text-decoration: underline;
   }
+  #footer-made-by {
+    color: white !important;
+  }
+  

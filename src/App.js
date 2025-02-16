@@ -12,6 +12,7 @@ import Layout from "./components/Layout"; // Importa Layout
 import "./App.css"
 import 'bootstrap/dist/css/bootstrap.min.css'; // Importa el CSS de Bootstrap
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Importa el JavaScript de Bootstrap
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const App = () => {
   return (

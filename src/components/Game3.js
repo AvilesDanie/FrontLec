@@ -139,27 +139,37 @@ const Game3 = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      <div className="game-container">
-        <div className="exercise-info">
-          <h1>{exercise?.name}</h1>
+    <div id="game-page">
+      <div id="game-container" className="game-container">
+        <div id="exercise-info" className="exercise-info">
+          <h1 id="exercise-name">{exercise?.name}</h1>
           <p>
-            {<div>
-              <div dangerouslySetInnerHTML={{ __html: removeTripleBackticksContent(exercise?.description) }} />
-            </div> || "No Description Available"}
+            <div id="exercise-description">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: removeTripleBackticksContent(exercise?.description),
+                }}
+              />
+            </div>
+            {"No Description Available"}
           </p>
-          <p><strong>Time remaining: {timeLeft} seconds</strong></p>
+          <p id="time-remaining">
+            <strong>Time remaining: {timeLeft} seconds</strong>
+          </p>
         </div>
 
-        <div className="solutions">
+        <div id="solutions-container" className="solutions">
           <h2>Select the correct solution:</h2>
-          <br></br>
-          <br></br>
+          <br />
+          <br />
 
           {solutions.map((solution, index) => (
             <button
               key={index}
-              className={`solution-button ${gameResult && solution === correctSolution ? 'correct' : ''}`}
+              id={`solution-${index}`}
+              className={`solution-button ${
+                gameResult && solution === correctSolution ? "correct" : ""
+              }`}
               onClick={() => handleButtonClick(solution)}
               disabled={!!gameResult} // Desactiva los botones si ya hay resultado
             >
@@ -169,28 +179,40 @@ const Game3 = () => {
         </div>
 
         {gameResult && (
-          <div className="result-modal">
-            {gameResult === 'win' ? (
+          <div id="result-modal" className="result-modal">
+            {gameResult === "win" ? (
               <>
-                <p>You won! You got 100 XP.</p>
-                <button onClick={goToExerciseList}>Back to the list of exercises</button>
+                <p id="win-message">You won! You got 100 XP.</p>
+                <button id="back-button" onClick={goToExerciseList}>
+                  Back to the list of exercises
+                </button>
               </>
-            ) : gameResult === 'timeout' ? (
+            ) : gameResult === "timeout" ? (
               <>
-                <p>Time out! Please try again.</p>
-                <button onClick={restartGame}>Retry</button>
+                <p id="timeout-message">Time out! Please try again.</p>
+                <button id="retry-button" onClick={restartGame}>
+                  Retry
+                </button>
               </>
             ) : (
               <>
-                <p>You lost!</p>
-                <button onClick={restartGame}>Retry</button>
-                <button onClick={() => navigate(`/user/${userId}/game/game3`)}>Back to the list of exercises</button>
+                <p id="lose-message">You lost!</p>
+                <button id="retry-button" onClick={restartGame}>
+                  Retry
+                </button>
+                <button
+                  id="back-game3-button"
+                  onClick={() => navigate(`/user/${userId}/game/game3`)}
+                >
+                  Back to the list of exercises
+                </button>
               </>
             )}
           </div>
         )}
       </div>
     </div>
+
   );
 };
 

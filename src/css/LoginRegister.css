@@ -81,7 +81,7 @@
     margin-top: 20px;
   }
   
-  .btn {
+  .btn1 {
     font-weight: 500;
     padding: 10px 30px; /* Aumentar el padding para hacerlos más grandes */
     border: none;
@@ -104,20 +104,20 @@
     border-color: #4a90e2; /* Borde para el botón de Register */
   }
   
-  .btn:hover {
+  .btn1:hover {
     opacity: 0.85;
     transform: scale(1.05); /* Efecto de escala al pasar el mouse */
   }
   
   /* Estilo para el botón activo */
-  .btn.active {
+  .btn1.active {
     background: #21264d; /* Color más intenso para el botón activo */
     border-color: #fff; /* Borde blanco para resaltar */
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Sombra para resaltar */
   }
   
   /* Estilo para el botón no activo */
-  .btn:not(.active) {
+  .btn1:not(.active) {
     background: rgba(255, 255, 255, 0.2); /* Fondo más claro para el botón no activo */
     border-color: rgba(255, 255, 255, 0.5); /* Borde más claro */
   }
