@@ -9,6 +9,44 @@
   animation: fadeIn 1s ease-in-out;
 }
 
+/* src/css/ExerciseList.css */
+.exercise-list-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.exercise-list-container li {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+  position: relative; /* Necesario para posicionar el ícono de "visto" */
+  min-height: 150px; /* Asegura que el contenedor tenga suficiente altura */
+}
+
+.exercise-list-container h3 {
+  margin-top: 0;
+}
+
+.exercise-list-container p {
+  margin: 10px 0;
+}
+
+.priority-high {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+.exercise-list-container button {
+  margin-top: 10px;
+}
+
+/* Estilos para el ícono de "visto" */
+.position-absolute {
+  z-index: 1; /* Asegura que el ícono esté por encima de otros elementos */
+}
+
 h1 {
   font-size: 2.5rem;
   margin-bottom: 20px;
@@ -63,3 +101,4 @@ button:hover {
     opacity: 1;
   }
 }
+

@@ -8,20 +8,28 @@ import Game2 from "./components/Game2";
 import Game3 from "./components/Game3";
 import RankingPage from "./components/RankingPage";
 import Info from "./components/User";
+import Layout from "./components/Layout"; // Importa Layout
+import "./App.css"
+import 'bootstrap/dist/css/bootstrap.min.css'; // Importa el CSS de Bootstrap
+import 'bootstrap/dist/js/bootstrap.bundle.min'; // Importa el JavaScript de Bootstrap
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Ruta predeterminada para Login */}
+        {/* Página de Login sin Navbar */}
         <Route path="/" element={<LoginRegister />} />
-        <Route path="/user/:userId/" element={<HomePage />} />
-        <Route path="/user/:userId/game/:gameMode" element={<ExerciseList />} />
-        <Route path="/user/:userId/info" element={<Info />} />
-        <Route path="/user/:userId/game/game1/exercise/:exerciseId" element={<Game1 />} />
-        <Route path="/user/:userId/game/game2/exercise/:exerciseId" element={<Game2 />} />
-        <Route path="/user/:userId/game/game3/exercise/:exerciseId" element={<Game3 />} />
-        <Route path="/user/:userId/ranking" element={<RankingPage />} />
+
+        {/* Rutas con Navbar y Footer dentro del Layout */}
+        <Route path="/user/:userId" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="game/:gameMode" element={<ExerciseList />} />
+          <Route path="info" element={<Info />} />
+          <Route path="game/game1/exercise/:exerciseId" element={<Game1 />} />
+          <Route path="game/game2/exercise/:exerciseId" element={<Game2 />} />
+          <Route path="game/game3/exercise/:exerciseId" element={<Game3 />} />
+          <Route path="ranking" element={<RankingPage />} />
+        </Route>
       </Routes>
     </Router>
   );

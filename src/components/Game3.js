@@ -1,36 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../services/axiosConfig';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../css/Game3.css';  // Importar el archivo CSS
-import { Link } from 'react-router-dom';
 
 const Game3 = () => {
   const { exerciseId } = useParams();
   const [exercise, setExercise] = useState(null);
+  const [exercise1, setExercise1] = useState(null);
   const [solutions, setSolutions] = useState([]);
   const [correctSolution, setCorrectSolution] = useState('');
   const [gameResult, setGameResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timeLeft, setTimeLeft] = useState(30); // Temporizador de 30 segundos
+  const [completedChallenges, setCompletedChallenges] = useState([]); // Estado para los ejercicios completados
+
   const { userId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const exerciseRes = await axios.get(`https://backlec-production.up.railway.app/api/codewars/challenge/${exerciseId}`);
+        const exerciseRes = await axios.get(`/codewars/challenge/${exerciseId}`);
         setExercise(exerciseRes.data);
-        const solutionRes = await axios.get(`https://backlec-production.up.railway.app/api/exercises/codewars/${exerciseId}`);
-        setCorrectSolution(solutionRes.data.answer.python);
 
-        const randomSolutionsRes = await axios.get(`https://backlec-production.up.railway.app/api/exercises/random/${exerciseId}`);
+        const solutionRes = await axios.get(`/exercises/codewars/${exerciseId}`);
+        setCorrectSolution(solutionRes.data.answer.python);
+        setExercise1(solutionRes.data);
+
+        const randomSolutionsRes = await axios.get(`/exercises/random/${exerciseId}`);
         const randomSolutions = randomSolutionsRes.data.map((item) => item.answer.python);
 
         const combinedSolutions = [...randomSolutions, solutionRes.data.answer.python];
         const shuffledSolutions = combinedSolutions.sort(() => Math.random() - 0.5);
 
         setSolutions(shuffledSolutions);
+
+        // Obtener los ejercicios completados del usuario
+        const userRes = await axios.get(`/users/${userId}`);
+        setCompletedChallenges(userRes.data.completedChallenges || []);
+
         setLoading(false);
       } catch (err) {
         setError('Error al obtener los datos');
@@ -39,7 +48,7 @@ const Game3 = () => {
     };
 
     fetchData();
-  }, [exerciseId]);
+  }, [exerciseId, userId]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -56,16 +65,34 @@ const Game3 = () => {
     return () => clearInterval(timer); // Limpieza del intervalo
   }, []);
 
+  // Verificar si el ejercicio ya está completado
+  const isExerciseCompleted = () => {
+    if (!exercise) return false; // Asegurarse de que el ejercicio esté cargado
+    return completedChallenges.some((challenge) => challenge.toString() === exercise1._id.toString());
+  };
+
   const handleButtonClick = async (selectedSolution) => {
     if (selectedSolution === correctSolution) {
       setGameResult('win');
       try {
-        await axios.put(`https://backlec-production.up.railway.app/api/users/progress-unified`, {
+        // Verificar si el ejercicio ya está completado
+        if (isExerciseCompleted()) {
+          return; // No sumar puntos si ya está completado
+        }
+
+        const payload = {
           userId,
           exerciseId,
-          experiencePoints: timeLeft > 15 ? 150 : 100, // Más puntos si responde rápido
+          experiencePoints: 100, // Siempre sumar 100 puntos (sin bonificación por tiempo)
           successful: true, // Marcado como exitoso
-        });
+        };
+
+        const response = await axios.put(`/users/progress-unified`, payload);
+
+        // Verificar si el progreso alcanzó el 100% y reiniciar a 0%
+        if (response.data.progress >= 100) {
+          await axios.put(`/users/${userId}`, { progress: 0 });
+        }
       } catch (err) {
         console.error('Error al actualizar el progreso del usuario:', err);
         alert('Error al actualizar el progreso del usuario.');
@@ -73,9 +100,9 @@ const Game3 = () => {
     } else {
       setGameResult('lose');
       try {
-        await axios.put(`https://backlec-production.up.railway.app/api/users/progress-unified`, {
+        await axios.put(`/users/progress-unified`, {
           userId,
-          exerciseId,
+          exerciseId, 
           experiencePoints: 0, // No se ganan puntos al fallar
           successful: false, // Marcado como fallo
         });
@@ -84,7 +111,6 @@ const Game3 = () => {
       }
     }
   };
-  
 
   const goToExerciseList = () => {
     navigate(`/user/${userId}/game/game3`);
@@ -94,58 +120,35 @@ const Game3 = () => {
     setGameResult(null);
     setTimeLeft(30); // Reiniciar el temporizador
   };
-  /*const removeTripleBackticksContent = (str) => {
-    // Usamos una expresión regular para encontrar y eliminar contenido entre triple comillas
-    return str.replace(/```[^`]*```/g, '');
-  };*/
-    // Función para limpiar la descripción
-// Función para limpiar la descripción
-const removeTripleBackticksContent = (description) => {
-  return description
-    .replace(/```[\s\S]*?```/g, '')  // Elimina bloques de código entre ```
-    .replace(/~~~[\s\S]*?~~~/g, '')  // Elimina bloques de código entre ~~~
-    .replace(/`[^`]+`/g, '')         // Elimina texto entre comillas invertidas (`example`)
-    .replace(/\*\*[^*]+\*\*/g, '')   // Elimina texto entre ** **
-    .replace(/\[.*?\]\(.*?\)/g, '')   // Elimina enlaces en formato [texto](url)
-    .replace(/####\s?.*/g, '')       // Elimina encabezados "####"
-    .replace(/- Task:.*|Examples:.*|Note:.*|Bash Note:.*|See "Sample Tests".*/gi, '')  // Filtra secciones irrelevantes
-    .replace(/\s+/g, ' ')            // Reduce espacios múltiples a uno solo
-    .trim();                         // Elimina espacios iniciales y finales
-};
 
+  // Función para limpiar la descripción
+  const removeTripleBackticksContent = (description) => {
+    return description
+      .replace(/```[\s\S]*?```/g, '')  // Elimina bloques de código entre ```
+      .replace(/~~~[\s\S]*?~~~/g, '')  // Elimina bloques de código entre ~~~
+      .replace(/`[^`]+`/g, '')         // Elimina texto entre comillas invertidas (`example`)
+      .replace(/\*\*[^*]+\*\*/g, '')   // Elimina texto entre ** **
+      .replace(/\[.*?\]\(.*?\)/g, '')   // Elimina enlaces en formato [texto](url)
+      .replace(/####\s?.*/g, '')       // Elimina encabezados "####"
+      .replace(/- Task:.*|Examples:.*|Note:.*|Bash Note:.*|See "Sample Tests".*/gi, '')  // Filtra secciones irrelevantes
+      .replace(/\s+/g, ' ')            // Reduce espacios múltiples a uno solo
+      .trim();                         // Elimina espacios iniciales y finales
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
- 
     <div>
-      {/* NavBar interactivo */}
-      <link  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"rel="stylesheet"/>
-      <nav className="game-navbar">
-  <div className="logo">🎮 GameConsole</div>
-  <ul className="nav-links">
-    <li><Link to={`/user/${userId}`}><i className="fas fa-home"></i> Home</Link></li>
-    <li><Link to={`/user/${userId}/game/game3`}><i className="fas fa-gamepad"></i> Juegos</Link></li>
-    <li><Link to={`/user/${userId}/ranking`}><i className="fas fa-trophy"></i> Ranking</Link></li>    
-    <li><Link to={/user/`${userId}/info`}><i className="fas fa-user"></i> Profile</Link></li>
-    
-    <li><Link to="/"><i className="fas fa-cogs"></i> Exit</Link></li>
-  </ul>
-</nav>
-
-      
-
-      {/* Contenido principal */}
       <div className="game-container">
         <div className="exercise-info">
           <h1>{exercise?.name}</h1>
           <p>
             {<div>
-              <div dangerouslySetInnerHTML={{ __html: removeTripleBackticksContent(exercise.description) }} />
+              <div dangerouslySetInnerHTML={{ __html: removeTripleBackticksContent(exercise?.description) }} />
             </div> || "No Description Available"}
           </p>
-          <p><strong>Time remaining:{timeLeft} seconds</strong></p>
+          <p><strong>Time remaining: {timeLeft} seconds</strong></p>
         </div>
 
         <div className="solutions">
@@ -169,7 +172,7 @@ const removeTripleBackticksContent = (description) => {
           <div className="result-modal">
             {gameResult === 'win' ? (
               <>
-                <p>You won! You got {timeLeft > 15 ? 150 : 100} XP.</p>
+                <p>You won! You got 100 XP.</p>
                 <button onClick={goToExerciseList}>Back to the list of exercises</button>
               </>
             ) : gameResult === 'timeout' ? (

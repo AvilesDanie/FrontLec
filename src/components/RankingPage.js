@@ -1,24 +1,25 @@
+// RankingPage.js
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../services/axiosConfig";
+import { useParams } from 'react-router-dom';
 import '../css/RankingPage.css';
-import { Link } from 'react-router-dom';
-import { useParams, useNavigate } from 'react-router-dom';
+
+
 
 const RankingPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { userId } = useParams(); 
+  const { userId } = useParams();
 
   useEffect(() => {
     // Obtener usuarios desde el backend
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("https://backlec-production.up.railway.app/api/users");
+        const response = await axios.get("/users");
         // Ordenar usuarios por nivel y puntos de experiencia
         const sortedUsers = response.data.sort(
-          (a, b) =>
-            b.level - a.level || b.experiencePoints - a.experiencePoints
+          (a, b) => b.level - a.level || b.experiencePoints - a.experiencePoints
         );
         setUsers(sortedUsers);
         setLoading(false);
@@ -35,41 +36,36 @@ const RankingPage = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-          {/* NavBar interactivo */}
-          <link  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"rel="stylesheet"/>
-          <nav className="game-navbar">
-      <div className="logo">🎮 GameConsole</div>
-      <ul className="nav-links">
-        <li><Link to={`/user/${userId}`}><i className="fas fa-home"></i> Home</Link></li>
-        <li><Link to="/ranking"><i className="fas fa-trophy"></i> Ranking</Link></li>
-        <li><Link to={`/user/${userId}/info`}><i className="fas fa-user"></i> Profile</Link></li>
-        <li><Link to="/"><i className="fas fa-cogs"></i> Exit</Link></li>
-      </ul>
-    </nav>
-    <div className="ranking-page">
-      <h1>User Ranking</h1>
-      <table className="ranking-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>User</th>
-            <th>LVL</th>
-            <th>XP Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user, index) => (
-            <tr key={user._id}>
-              <td>{index + 1}</td>
-              <td>{user.username}</td>
-              <td>{user.level}</td>
-              <td>{user.experiencePoints}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <div className="ranking-page bg-dark text-white min-vh-100 p-3">
+
+      {/* Contenedor principal */}
+      <div className="container mt-5">
+        <h1 className="text-center mb-4">User Ranking</h1>
+
+        {/* Tabla de Bootstrap */}
+        <div className="table-responsive">
+          <table className="table table-dark table-striped table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>LVL</th>
+                <th>XP Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr key={user._id}>
+                  <td>{index + 1}</td>
+                  <td>{user.username}</td>
+                  <td>{user.level}</td>
+                  <td>{user.experiencePoints}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

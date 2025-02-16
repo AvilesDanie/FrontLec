@@ -1,0 +1,44 @@
+/* NavBar.css */
+/* Estilos para el NavBar */
+.navbar {
+    padding-left: 0; /* Eliminar padding izquierdo */
+    padding-right: 0; /* Eliminar padding derecho */
+  }
+  
+  /* Estilos para los botones del menú */
+  .nav-link.btn {
+    border-radius: 20px; /* Bordes redondeados */
+    padding: 8px 16px; /* Espaciado interno */
+    transition: all 0.3s ease; /* Transición suave */
+    color: #000 !important; /* Texto negro */
+    background-color: #fff; /* Fondo blanco */
+    border: 1px solid #000; /* Borde negro */
+  }
+  
+  .nav-link.btn:hover {
+    background-color: #f8f9fa; /* Fondo gris claro al hacer hover */
+    transform: translateY(-2px); /* Efecto de elevación */
+  }
+  
+  /* Ajustar el ancho del menú colapsable en modo móvil */
+  @media (max-width: 991.98px) {
+    .navbar-collapse {
+      width: 100%; /* Ocupa el 100% del ancho de la pantalla */
+      margin: 0; /* Sin margen */
+      background-color: #f8f9fa; /* Fondo claro para el menú */
+      border-radius: 0; /* Sin bordes redondeados */
+      padding: 10px; /* Espaciado interno */
+    }
+  
+    .navbar-nav {
+      display: grid; /* Usar CSS Grid */
+      grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+      gap: 10px; /* Espacio entre elementos */
+    }
+  
+    .nav-link.btn {
+      width: 100%; /* Ocupar todo el ancho disponible */
+      text-align: center; /* Centrar el texto */
+      margin: 0; /* Eliminar márgenes */
+    }
+  }

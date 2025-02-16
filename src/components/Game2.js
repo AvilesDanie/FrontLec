@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../services/axiosConfig';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../css/Game2.css';  // Importar el archivo CSS
-import { Link } from 'react-router-dom';
+
 const Game2Exercise = () => {
   const { exerciseId } = useParams(); // Captura el codewarsId desde la URL
   const [exercise, setExercise] = useState(null);
@@ -15,20 +15,23 @@ const Game2Exercise = () => {
   const [correctLine, setCorrectLine] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   const [gameResult, setGameResult] = useState(null); // Resultado del juego 
+  const [completedChallenges, setCompletedChallenges] = useState([]); // Estado para los ejercicios completados
+
   const { userId } = useParams(); // ID del usuario
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const exerciseRes = await axios.get(`https://backlec-production.up.railway.app/api/exercises/codewars/${exerciseId}`);
+        const exerciseRes = await axios.get(`/exercises/codewars/${exerciseId}`);
         setExercise(exerciseRes.data);
 
-        const exerciseDetailsRes = await axios.get(`https://backlec-production.up.railway.app/api/codewars/challenge/${exerciseId}`);
+        const exerciseDetailsRes = await axios.get(`/codewars/challenge/${exerciseId}`);
         setExerciseDetails(exerciseDetailsRes.data);
 
-        const userRes = await axios.get(`https://backlec-production.up.railway.app/api/users/${userId}`);
+        const userRes = await axios.get(`/users/${userId}`);
         setUser(userRes.data);
+        setCompletedChallenges(userRes.data.completedChallenges || []); // Obtener ejercicios completados
 
         setLoading(false);
       } catch (err) {
@@ -49,7 +52,7 @@ const Game2Exercise = () => {
           setCorrectLine(codeLines[lineIndex]);
 
           // Obtener líneas aleatorias de otros ejercicios
-          const otherExercisesRes = await axios.get(`https://backlec-production.up.railway.app/api/exercises`);
+          const otherExercisesRes = await axios.get(`/exercises`);
           const otherExercises = otherExercisesRes.data.filter((ex) => ex.codewarsId !== exerciseId);
 
           const incorrectOptions = [];
@@ -88,116 +91,103 @@ const Game2Exercise = () => {
       await handleGameCompletion(false); // Esto asegura que los tags incorrectos se actualicen.
     }
   };
-  
 
+  // Verificar si el ejercicio ya está completado
+  const isExerciseCompleted = () => {
+    if (!exercise) return false; // Asegurarse de que el ejercicio esté cargado
+    return completedChallenges.some((challenge) => challenge.toString() === exercise._id.toString());
+  };
+
+  // Manejo del resultado del juego
   const handleGameCompletion = async (isWin) => {
     try {
+      // Verificar si el ejercicio ya está completado
+      if (isExerciseCompleted()) {
+        setGameResult(isWin ? 'win' : 'lose');
+        return; // No sumar puntos si ya está completado
+      }
+
       const payload = {
         userId,
-        exerciseId,
-        experiencePoints: isWin ? 100 : 0, // 100 puntos si gana
-        successful: isWin, // Determina si el intento fue exitoso
+        exerciseId, 
+        experiencePoints: isWin ? 100 : 0, // Sumar puntos solo si no está completado
+        successful: isWin,
       };
-  
-      console.log('Payload enviado:', payload);
-  
-      const response = await axios.put(`https://backlec-production.up.railway.app/api/users/progress-unified`, payload);
-  
-      console.log('Respuesta del backend:', response.data);
-  
-      if (isWin) {
-        setGameResult('win');
-      } else {
-        setGameResult('lose');
+
+      const response = await axios.put(`/users/progress-unified`, payload);
+
+      // Verificar si el progreso alcanzó el 100% y reiniciar a 0%
+      if (response.data.progress >= 100) {
+        await axios.put(`/users/${userId}`, { progress: 0 });
       }
+
+      setGameResult(isWin ? 'win' : 'lose');
     } catch (err) {
       console.error('Error al actualizar el progreso:', err);
-      alert('Ocurrió un error al actualizar el progreso. Por favor, intenta nuevamente.');
     }
   };
-  
 
   const restartGame = () => {
     setGameResult(null);
     setSelectedOption('');
   };
-/*  const removeTripleBackticksContent = (str) => {
-    // Usamos una expresión regular para encontrar y eliminar contenido entre triple comillas
-    return str.replace(/```[^`]*```/g, '');
-};*/
-// Función para limpiar la descripción
-const removeTripleBackticksContent = (description) => {
-  return description
-    .replace(/```[\s\S]*?```/g, '')  // Elimina bloques de código entre ```
-    .replace(/~~~[\s\S]*?~~~/g, '')  // Elimina bloques de código entre ~~~
-    .replace(/`[^`]+`/g, '')         // Elimina texto entre comillas invertidas (`example`)
-    .replace(/\*\*[^*]+\*\*/g, '')   // Elimina texto entre ** **
-    .replace(/\[.*?\]\(.*?\)/g, '')   // Elimina enlaces en formato [texto](url)
-    .replace(/####\s?.*/g, '')       // Elimina encabezados "####"
-    .replace(/- Task:.*|Examples:.*|Note:.*|Bash Note:.*|See "Sample Tests".*/gi, '')  // Filtra secciones irrelevantes
-    .replace(/\s+/g, ' ')            // Reduce espacios múltiples a uno solo
-    .trim();                         // Elimina espacios iniciales y finales
-};
 
+  // Función para limpiar la descripción
+  const removeTripleBackticksContent = (description) => {
+    return description
+      .replace(/```[\s\S]*?```/g, '')  // Elimina bloques de código entre ```
+      .replace(/~~~[\s\S]*?~~~/g, '')  // Elimina bloques de código entre ~~~
+      .replace(/`[^`]+`/g, '')         // Elimina texto entre comillas invertidas (`example`)
+      .replace(/\*\*[^*]+\*\*/g, '')   // Elimina texto entre ** **
+      .replace(/\[.*?\]\(.*?\)/g, '')   // Elimina enlaces en formato [texto](url)
+      .replace(/####\s?.*/g, '')       // Elimina encabezados "####"
+      .replace(/- Task:.*|Examples:.*|Note:.*|Bash Note:.*|See "Sample Tests".*/gi, '')  // Filtra secciones irrelevantes
+      .replace(/\s+/g, ' ')            // Reduce espacios múltiples a uno solo
+      .trim();                         // Elimina espacios iniciales y finales
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
-
-<div>
-      {/* NavBar interactivo */}
-      <link  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"rel="stylesheet"/>
-      <nav className="game-navbar">
-  <div className="logo">🎮 GameConsole</div>
-  <ul className="nav-links">
-    <li><Link to={`/user/${userId}`}><i className="fas fa-home"></i> Home</Link></li>
-    <li><Link to={`/user/${userId}/game/game2`}><i className="fas fa-gamepad"></i> Juegos</Link></li>
-    <li><Link to={`/user/${userId}/ranking`}><i className="fas fa-trophy"></i> Ranking</Link></li>
-    <li><Link to={`/user/${userId}/info`}><i className="fas fa-user"></i> Profile</Link></li>
-    
-    <li><Link to="/"><i className="fas fa-cogs"></i> Exit</Link></li>
-  </ul>
-</nav>
-    
-    <div className="exercise-container">
-      <div className="exercise-info">
-        <h1>{exerciseDetails?.name}</h1>
-        <p>{<div>
-      {/* Renderizamos el HTML usando dangerouslySetInnerHTML */}
-      <div dangerouslySetInnerHTML={{ __html: removeTripleBackticksContent(exerciseDetails.description) }} />
-    </div> || "No Description Available"}</p>
-      </div>
-
-      <div className="exercise-code">
-        <h2>Python Code</h2>
-        <pre>{modifiedCode || 'Cargando código...'}</pre>
-      </div>
-
-      <div className="options">
-        {options.map((option, index) => (
-          <button
-            key={index}
-            className={`option ${selectedOption === option ? 'selected' : ''}`}
-            onClick={() => handleOptionSelect(option)}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
-
-      {gameResult && (
-        <div className="result-modal">
-          {gameResult === 'win' ? (
-            <p>Correct! You have completed the exercise.</p>
-          ) : (
-            <p>Incorrect! Please try again.</p>
-          )}
-          <button onClick={restartGame}>Retry</button>
-          <button onClick={() => navigate(`/user/${userId}/game/game2`)}>Back to the list of exercises</button>
+    <div>
+      <div className="exercise-container">
+        <div className="exercise-info">
+          <h1>{exerciseDetails?.name}</h1>
+          <p>
+            <div dangerouslySetInnerHTML={{ __html: removeTripleBackticksContent(exerciseDetails?.description) || 'No Description Available' }} />
+          </p>
         </div>
-      )}
-    </div>
+
+        <div className="exercise-code">
+          <h2>Python Code</h2>
+          <pre>{modifiedCode || 'Cargando código...'}</pre>
+        </div>
+
+        <div className="options">
+          {options.map((option, index) => (
+            <button
+              key={index}
+              className={`option ${selectedOption === option ? 'selected' : ''}`}
+              onClick={() => handleOptionSelect(option)}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+
+        {gameResult && (
+          <div className="result-modal">
+            {gameResult === 'win' ? (
+              <p>Correct! You have completed the exercise.</p>
+            ) : (
+              <p>Incorrect! Please try again.</p>
+            )}
+            <button onClick={restartGame}>Retry</button>
+            <button onClick={() => navigate(`/user/${userId}/game/game2`)}>Back to the list of exercises</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

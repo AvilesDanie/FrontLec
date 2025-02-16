@@ -1,26 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import '../css/ExerciseList.css';  // Importa el archivo CSS
-import { Link } from 'react-router-dom';
+import NavBar from './NavBar';
+import axiosConfig from '../services/axiosConfig'; // Importa axiosConfig directamente
 
 const ExerciseList = () => {
   const { gameMode } = useParams(); // Obtener el modo de juego desde la URL
   const navigate = useNavigate();
   const [exercises, setExercises] = useState([]);
+  const [completedChallenges, setCompletedChallenges] = useState([]); // Estado para los ejercicios completados
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const { userId } =useParams(); // Reemplaza con un ID dinámico o autenticado
+  const { userId } = useParams(); // Obtener el ID del usuario desde la URL
 
   useEffect(() => {
-    const fetchExercises = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`https://backlec-production.up.railway.app/api/exercises/recommendations/${userId}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch recommended exercises");
-        }
-        const data = await response.json();
-        setExercises(data);
+        // Obtener los ejercicios recomendados
+        const exercisesResponse = await axiosConfig.get(`/exercises/recommendations/${userId}`);
+        setExercises(exercisesResponse.data);
+
+        // Obtener los datos del usuario para verificar los ejercicios completados
+        const userResponse = await axiosConfig.get(`/users/${userId}`);
+        setCompletedChallenges(userResponse.data.completedChallenges || []);
+
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -28,52 +32,77 @@ const ExerciseList = () => {
       }
     };
 
-    fetchExercises();
-  }, [gameMode]);
+    fetchData();
+  }, [gameMode, userId]);
 
   const handleExerciseSelect = (exerciseId) => {
     navigate(`/user/${userId}/game/${gameMode}/exercise/${exerciseId}`);
   };
-  
+
   const removeTripleBackticksContent = (str) => {
-    // Usamos una expresión regular para encontrar y eliminar contenido entre triple comillas
-    return str.replace(/```[^`]*```/g, '');
+    return str
+      .replace(/```[\s\S]*?```/g, '')  // Elimina bloques de código entre ```
+      .replace(/~~~[\s\S]*?~~~/g, '')  // Elimina bloques de código entre ~~~
+      .replace(/`[^`]+`/g, '')         // Elimina texto entre comillas invertidas (`example`)
+      .replace(/\*\*[^*]+\*\*/g, '')   // Elimina texto entre ** **
+      .replace(/\[.*?\]\(.*?\)/g, '')   // Elimina enlaces en formato [texto](url)
+      .replace(/####\s?.*/g, '')       // Elimina encabezados "####"
+      .replace(/- Task:.*|Examples:.*|Note:.*|Bash Note:.*|See "Sample Tests".*/gi, '')  // Filtra secciones irrelevantes
+      .replace(/\s+/g, ' ')            // Reduce espacios múltiples a uno solo
+      .trim();                         // Elimina espacios iniciales y finales
   };
 
+  // Función para verificar si un ejercicio está completado
+  const isExerciseCompleted = (codewarsId) => {
+    return completedChallenges.some((challenge) => challenge.toString() === codewarsId.toString());
+  };
 
   if (loading) return <p>Loading recommended exercises...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
-      {/* NavBar interactivo */}
-      <link  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"rel="stylesheet"/>
-      <nav className="game-navbar">
-  <div className="logo">🎮 GameConsole</div>
-  <ul className="nav-links">
-    <li><Link to={`/user/${userId}`}><i className="fas fa-home"></i> Home</Link></li>
-    <li><Link to={`/user/${userId}/ranking`}><i className="fas fa-trophy"></i> Ranking</Link></li>
-    <li><Link to={`/user/${userId}/info`}><i className="fas fa-user"></i> Profile</Link></li>
-
-    <li><Link to="/"><i className="fas fa-cogs"></i> Exit</Link></li>
-  </ul>
-</nav>
-    <div className="exercise-list-container">
-      <h1>{gameMode} - Recommended Exercises</h1>
-      <ul>
-        {exercises.map((exercise) => (
-          <li key={exercise.codewarsId}>
-            <h3>{exercise.name || "No Name Available"}</h3>
-            <p>{<div>
-      {/* Renderizamos el HTML usando dangerouslySetInnerHTML */}
-      <div dangerouslySetInnerHTML={{ __html: removeTripleBackticksContent(exercise.description) }} />
-    </div> || "No Description Available"}</p>
-            {exercise.priority > 0 && <p className="priority-high">Recommended Exercise.</p>}
-            <button onClick={() => handleExerciseSelect(exercise.codewarsId)}>Go to Exercise</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+      {/* Usar el componente NavBar */}
+      <NavBar userId={userId} />
+      <div className="exercise-list-container">
+        <h1>{gameMode} - Recommended Exercises</h1>
+        <ul>
+          {exercises.map((exercise) => {
+            const isCompleted = isExerciseCompleted(exercise._id); // Verificar si el ejercicio está completado
+            return (
+              <li key={exercise.codewarsId} className="position-relative">
+                <h3>{exercise.name || "No Name Available"}</h3>
+                <p>
+                  <div>
+                    {/* Renderizamos el HTML usando dangerouslySetInnerHTML */}
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: removeTripleBackticksContent(exercise.description),
+                      }}
+                    />
+                  </div>
+                </p>
+                {exercise.priority > 0 && (
+                  <p className="priority-high">Recommended Exercise.</p>
+                )}
+                {/* Mostrar el ícono de "visto" si el ejercicio está completado */}
+                {isCompleted && (
+                  <div className="position-absolute bottom-0 end-0 m-2">
+                    <i className="bi bi-check-circle-fill text-success" style={{ fontSize: '24px' }}></i>
+                  </div>
+                )}
+                {/* Cambiar el texto y el color del botón si el ejercicio está completado */}
+                <button
+                  className={`btn ${isCompleted ? "btn-success" : "btn-primary"}`}
+                  onClick={() => handleExerciseSelect(exercise.codewarsId)}
+                >
+                  {isCompleted ? "Reintentar" : "Go to Exercise"}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 };

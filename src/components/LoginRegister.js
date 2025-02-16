@@ -1,6 +1,6 @@
 import React, { useState,useEffect  } from "react";
 import axios from "../services/axiosConfig";
-import "./../css/style.css";
+import "../css/LoginRegister.css";
 import whiteOutline from "../img/white-outline.png";
 import cohete from "../img/cohete.png";
 import { useNavigate } from "react-router-dom";
@@ -83,7 +83,7 @@ const LoginRegister = () => {
       loginForm.style.opacity = 1;
       registerForm.style.opacity = 0;
 
-      document.querySelector(".col-1").style.borderRadius = "0 30% 20% 0";
+      document.querySelector(".form-col-1").style.borderRadius = "0 30% 20% 0";
     });
 
     registerBtn.addEventListener('click', () => {
@@ -96,7 +96,7 @@ const LoginRegister = () => {
       loginForm.style.opacity = 0;
       registerForm.style.opacity = 1;
 
-      document.querySelector(".col-1").style.borderRadius = "0 20% 30% 0";
+      document.querySelector(".form-col-1").style.borderRadius = "0 20% 30% 0";
     });
 
     // Cleanup event listeners when the component is unmounted
@@ -108,7 +108,7 @@ const LoginRegister = () => {
 
   return (
     <div className="form-container">
-      <div className="col col-1">
+      <div className="col form-col-1">
         <div className="image-layer">
           <img src={whiteOutline} alt="Outline" className="form-image-main" />
           <img src={cohete} alt="Cohete" className="form-image cohete" />
@@ -117,7 +117,7 @@ const LoginRegister = () => {
           <br /> You are about to enter a page that will help you with your needs.
         </p>
       </div>
-      <div className="col col-2">
+      <div className="col form-col-2">
         <div className="btn-box">
           <button
             className={`btn btn-1 ${isLogin ? "active" : ""}`}
