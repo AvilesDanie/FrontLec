@@ -107,152 +107,149 @@ const LoginRegister = () => {
   }, []);
 
   return (
-    <div id="form-container" className="form-container">
-      <div id="form-col-1" className="col form-col-1">
-        <div id="image-layer" className="image-layer">
-          <img id="outline-image" src={whiteOutline} alt="Outline" className="form-image-main" />
-          <img id="rocket-image" src={cohete} alt="Cohete" className="form-image cohete" />
-        </div>
-        <p id="featured-words" className="featured-words">
-          <br /> You are about to enter a page that will help you with your needs.
-        </p>
-      </div>
-
-      <div id="form-col-2" className="col form-col-2">
-        <div id="btn-box" className="btn-box">
-          <button
-            id="login-btn"
-            className={`btn1 btn-1 ${isLogin ? "active" : ""} text-white`}
-            onClick={() => handleSwitchForm("login")}
-          >
-            Login
-          </button>
-          <button
-            id="register-btn"
-            className={`btn1 btn-2 ${!isLogin ? "active" : ""} text-white`}
-            onClick={() => handleSwitchForm("register")}
-          >
-            Register
-          </button>
-        </div>
-
-        {/* Login Form */}
-        <form
-          id="login-form"
-          className="login-form"
-          style={{
-            left: isLogin ? "50%" : "150%",
-            opacity: isLogin ? 1 : 0,
-          }}
-          onSubmit={handleSubmit}
-        >
-          <div id="login-form-title" className="form-title">
-            <span>Login</span>
-          </div>
-          <div id="login-form-inputs" className="form-inputs">
-            <div id="login-email-box" className="input-box">
-              <input
-                id="login-email"
-                type="email"
-                name="email"
-                className="input-field"
-                placeholder="Email"
-                onChange={handleChange}
-                required
-              />
-              <i className="bx bx-envelope icon"></i>
-            </div>
-            <div id="login-password-box" className="input-box">
-              <input
-                id="login-password"
-                type="password"
-                name="password"
-                className="input-field"
-                placeholder="Password"
-                onChange={handleChange}
-                required
-              />
-              <i className="bx bx-lock-alt icon"></i>
-            </div>
-            <div id="login-submit-box" className="input-box">
-              <button id="login-submit" className="input-submit">
-                <span>Login</span>
-                <i className="bx bx-right-arrow-alt"></i>
-              </button>
-              {message && (
-                <p id="login-message" className={`message ${messageType === "error" ? "error" : "success"}`}>
-                  {message}
-                </p>
-              )}
-            </div>
-          </div>
-        </form>
-
-        {/* Register Form */}
-        <form
-          id="register-form"
-          className="register-form"
-          style={{
-            left: isLogin ? "-50%" : "50%",
-            opacity: isLogin ? 0 : 1,
-          }}
-          onSubmit={handleSubmit}
-        >
-          <div id="register-form-title" className="form-title">
-            <span>Create Account</span>
-          </div>
-          <div id="register-form-inputs" className="form-inputs">
-            <div id="register-username-box" className="input-box">
-              <input
-                id="register-username"
-                type="text"
-                name="username"
-                className="input-field"
-                placeholder="User name"
-                onChange={handleChange}
-                required
-              />
-              <i className="bx bx-user icon"></i>
-            </div>
-            <div id="register-email-box" className="input-box">
-              <input
-                id="register-email"
-                type="email"
-                name="email"
-                className="input-field"
-                placeholder="Email"
-                onChange={handleChange}
-                required
-              />
-              <i className="bx bx-envelope icon"></i>
-            </div>
-            <div id="register-password-box" className="input-box">
-              <input
-                id="register-password"
-                type="password"
-                name="password"
-                className="input-field"
-                placeholder="Password"
-                onChange={handleChange}
-                required
-              />
-              <i className="bx bx-lock-alt icon"></i>
-            </div>
-            <div id="register-submit-box" className="input-box">
-              <button id="register-submit" className="input-submit">
-                <span>Register</span>
-                <i className="bx bx-right-arrow-alt"></i>
-              </button>
-              {message && (
-                <p id="register-message" className={`message ${messageType === "error" ? "error" : "success"}`}>
-                  {message}
-                </p>
-              )}
-            </div>
-          </div>
-        </form>
-      </div>
+    <div className="form-container" id="form-container">
+  <div className="col form-col-1" id="form-col-1">
+    <div className="image-layer" id="image-layer">
+      <img src={whiteOutline} alt="Outline" className="form-image-main" id="outline-image" />
+      <img src={cohete} alt="Cohete" className="form-image cohete" id="cohete-image" />
     </div>
+    <p className="featured-words" id="featured-words">
+      <br /> You are about to enter a page that will help you with your needs.
+    </p>
+  </div>
+  <div className="col form-col-2" id="form-col-2">
+    <div className="btn-box" id="btn-box">
+      <button
+        className={`btn1 btn-1 ${isLogin ? "active" : ""} text-white`}
+        id="login"
+        onClick={() => handleSwitchForm("login")}
+      >
+        Login
+      </button>
+      <button
+        className={`btn1 btn-2 ${!isLogin ? "active" : ""} text-white`}
+        id="register"
+        onClick={() => handleSwitchForm("register")}
+      >
+        Register
+      </button>
+    </div>
+
+    <form
+      className="login-form"
+      style={{
+        left: isLogin ? "50%" : "150%",
+        opacity: isLogin ? 1 : 0,
+      }}
+      onSubmit={handleSubmit}
+      id="login-form"
+    >
+      <div className="form-title" id="login-form-title">
+        <span>Login</span>
+      </div>
+      <div className="form-inputs" id="login-form-inputs">
+        <div className="input-box" id="login-input-email">
+          <input
+            type="email"
+            name="email"
+            className="input-field"
+            placeholder="Email"
+            onChange={handleChange}
+            required
+            id="email"
+          />
+          <i className="bx bx-envelope icon" id="email-icon"></i>
+        </div>
+        <div className="input-box" id="login-input-password">
+          <input
+            type="password"
+            name="password"
+            className="input-field"
+            placeholder="Password"
+            onChange={handleChange}
+            required
+            id="password"
+          />
+          <i className="bx bx-lock-alt icon" id="password-icon"></i>
+        </div>
+        <div className="input-box" id="login-submit">
+          <button className="input-submit" id="login-submit-btn">
+            <span>Login</span>
+            <i className="bx bx-right-arrow-alt" id="login-submit-icon"></i>
+          </button>
+          {message && (
+            <p className={`message ${messageType === "error" ? "error" : "success"}`} id="login-message">
+              {message}
+            </p>
+          )}
+        </div>
+      </div>
+    </form>
+
+    <form
+      className="register-form"
+      style={{
+        left: isLogin ? "-50%" : "50%",
+        opacity: isLogin ? 0 : 1,
+      }}
+      onSubmit={handleSubmit}
+      id="register-form"
+    >
+      <div className="form-title" id="register-form-title">
+        <span>Create Account</span>
+      </div>
+      <div className="form-inputs" id="register-form-inputs">
+        <div className="input-box" id="register-input-username">
+          <input
+            type="text"
+            name="username"
+            className="input-field"
+            placeholder="User name"
+            onChange={handleChange}
+            required
+            id="username"
+          />
+          <i className="bx bx-user icon" id="username-icon"></i>
+        </div>
+        <div className="input-box" id="register-input-email">
+          <input
+            type="email"
+            name="email"
+            className="input-field"
+            placeholder="Email"
+            onChange={handleChange}
+            required
+            id="register-email"
+          />
+          <i className="bx bx-envelope icon" id="register-email-icon"></i>
+        </div>
+        <div className="input-box" id="register-input-password">
+          <input
+            type="password"
+            name="password"
+            className="input-field"
+            placeholder="Password"
+            onChange={handleChange}
+            required
+            id="register-password"
+          />
+          <i className="bx bx-lock-alt icon" id="register-password-icon"></i>
+        </div>
+        <div className="input-box" id="register-submit">
+          <button className="input-submit" id="register-submit-btn">
+            <span>Register</span>
+            <i className="bx bx-right-arrow-alt" id="register-submit-icon"></i>
+          </button>
+          {message && (
+            <p className={`message ${messageType === "error" ? "error" : "success"}`} id="register-message">
+              {message}
+            </p>
+          )}
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
   );
 };
