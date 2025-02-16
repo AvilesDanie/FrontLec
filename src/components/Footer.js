@@ -26,7 +26,7 @@ const Footer = () => {
           Ariel Reyes, {" "}
         </a>
         <a
-          id="footer-github-link-2"
+          id="footer-github-link-3"
           href="https://github.com/KevinColoma"
           target="_blank"
           rel="noopener noreferrer"

@@ -187,19 +187,29 @@ const Game2Exercise = () => {
         {gameResult && (
           <div id="result-modal" className="result-modal">
             {gameResult === "win" ? (
-              <p>Correct! You have completed the exercise.</p>
+              <>
+                <p>Correct! You have completed the exercise.</p>
+                <button
+                  id="back-button"
+                  onClick={() => navigate(`/user/${userId}/game/game2`)}
+                >
+                  Back to the list of exercises
+                </button>
+              </>
             ) : (
-              <p>Incorrect! Please try again.</p>
+              <>
+                <p>Incorrect! Please try again.</p>
+                <button id="retry-button" onClick={restartGame}>
+                  Retry
+                </button>
+                <button
+                  id="back-button"
+                  onClick={() => navigate(`/user/${userId}/game/game2`)}
+                >
+                  Back to the list of exercises
+                </button>
+              </>
             )}
-            <button id="retry-button" onClick={restartGame}>
-              Retry
-            </button>
-            <button
-              id="back-button"
-              onClick={() => navigate(`/user/${userId}/game/game2`)}
-            >
-              Back to the list of exercises
-            </button>
           </div>
         )}
       </div>
