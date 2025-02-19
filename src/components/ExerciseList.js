@@ -65,49 +65,53 @@ const ExerciseList = () => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
-      {/* Usar el componente NavBar */}
-      <NavBar userId={userId} />
-      <div className="exercise-list-container">
-        <h1>{gameMode} - Recommended Exercises</h1>
-        <ul>
-          {exercises.map((exercise) => {
-            const isCompleted = isExerciseCompleted(exercise._id); // Verificar si el ejercicio está completado
-            return (
-              <li key={exercise.codewarsId} className="position-relative">
-                <h3>{exercise.name || "No Name Available"}</h3>
-                <p>
-                  <div>
-                    {/* Renderizamos el HTML usando dangerouslySetInnerHTML */}
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: removeTripleBackticksContent(exercise.description),
-                      }}
-                    />
-                  </div>
-                </p>
-                {exercise.priority > 0 && (
-                  <p className="priority-high">Recommended Exercise.</p>
-                )}
-                {/* Mostrar el ícono de "visto" si el ejercicio está completado */}
-                {isCompleted && (
-                  <div className="position-absolute bottom-0 end-0 m-2">
-                    <i className="bi bi-check-circle-fill text-success" style={{ fontSize: '24px' }}></i>
-                  </div>
-                )}
-                {/* Cambiar el texto y el color del botón si el ejercicio está completado */}
-                <button
-                  className={`btn ${isCompleted ? "btn-success" : "btn-primary"}`}
-                  onClick={() => handleExerciseSelect(exercise.codewarsId)}
-                >
-                  {isCompleted ? "Do it again" : "Go to Exercise"}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </div>
+    <div id="main-container">
+  {/* Usar el componente NavBar */}
+  <NavBar userId={userId} id="navbar" />
+  
+  <div className="exercise-list-container" id="exercise-list-container">
+    <h1 id="exercise-list-title">{gameMode} - Recommended Exercises</h1>
+    <ul id="exercise-list">
+      {exercises.map((exercise) => {
+        const isCompleted = isExerciseCompleted(exercise._id); // Verificar si el ejercicio está completado
+        return (
+          <li key={exercise.codewarsId} className="position-relative" id={`exercise-${exercise.codewarsId}`}>
+            <h3 id={`exercise-name-${exercise.codewarsId}`}>{exercise.name || "No Name Available"}</h3>
+            <p id={`exercise-description-${exercise.codewarsId}`}>
+              <div>
+                {/* Renderizamos el HTML usando dangerouslySetInnerHTML */}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: removeTripleBackticksContent(exercise.description),
+                  }}
+                  id={`exercise-description-html-${exercise.codewarsId}`}
+                />
+              </div>
+            </p>
+            {exercise.priority > 0 && (
+              <p className="priority-high" id={`exercise-priority-${exercise.codewarsId}`}>Recommended Exercise.</p>
+            )}
+            {/* Mostrar el ícono de "visto" si el ejercicio está completado */}
+            {isCompleted && (
+              <div className="position-absolute bottom-0 end-0 m-2" id={`exercise-completed-icon-${exercise.codewarsId}`}>
+                <i className="bi bi-check-circle-fill text-success" style={{ fontSize: '24px' }}></i>
+              </div>
+            )}
+            {/* Cambiar el texto y el color del botón si el ejercicio está completado */}
+            <button
+              className={`btn ${isCompleted ? "btn-success" : "btn-primary"}`}
+              onClick={() => handleExerciseSelect(exercise.codewarsId)}
+              id={`exercise-button-${exercise.codewarsId}`}
+            >
+              {isCompleted ? "Do it again" : "Go to Exercise"}
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</div>
+
   );
 };
 
