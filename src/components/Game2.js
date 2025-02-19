@@ -133,10 +133,14 @@ const Game2Exercise = () => {
   };
 
   // Función para limpiar la descripción
-  const removeTripleBackticksContent = (description) => {
-    return description
+  const removeTripleBackticksContent = (str) => {
+    return str
       .replace(/```[\s\S]*?```/g, '')  // Elimina bloques de código entre ```
-      .replace(/~~~[\s\S]*?~~~/g, '')  // Elimina bloques de código entre ~~~
+      .replace(/~~~/g, '')  // Elimina bloques de código entre ~~~
+      .replace(/if-not:sql,shell/g, '')
+      .replace(/if:sql/g, '')
+      .replace(/#/g, '')
+      .replace(/Examples/g, '')
       .replace(/`[^`]+`/g, '')         // Elimina texto entre comillas invertidas (`example`)
       .replace(/\*\*[^*]+\*\*/g, '')   // Elimina texto entre ** **
       .replace(/\[.*?\]\(.*?\)/g, '')   // Elimina enlaces en formato [texto](url)
