@@ -175,3 +175,6 @@
     transform: translateY(0);
   }
 }
+.selected-line {
+  background-color: lightblue; /* Color para indicar selección */
+}
