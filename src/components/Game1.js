@@ -13,6 +13,8 @@ const Game1Exercise = () => {
   const [orderedLines, setOrderedLines] = useState([]);
   const [gameResult, setGameResult] = useState(null);
   const [completedChallenges, setCompletedChallenges] = useState([]); // Estado para los ejercicios completados
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
 
   const { userId } = useParams(); // ID del usuario (ajustar si es necesario)
   const navigate = useNavigate(); // Usamos useNavigate para la navegación
@@ -60,6 +62,20 @@ const Game1Exercise = () => {
     updatedLines.splice(toIndex, 0, movedLine);
     setLines(updatedLines);
   };
+
+  const handleLineClick = (index) => {
+  if (selectedIndex === null) {
+    setSelectedIndex(index); // Selecciona la primera línea
+  } else {
+    // Intercambiar líneas
+    const updatedLines = [...lines];
+    [updatedLines[selectedIndex], updatedLines[index]] = [updatedLines[index], updatedLines[selectedIndex]];
+    setLines(updatedLines);
+    
+    setSelectedIndex(null); // Reiniciar selección
+  }
+};
+
 
   // Verificar respuesta del usuario
   const checkAnswer = () => {
@@ -157,6 +173,7 @@ const Game1Exercise = () => {
                 id={`code-line-${index}`}
                 className="code-line"
                 draggable
+                onClick={() => handleLineClick(index)}
                 onDragStart={(e) => e.dataTransfer.setData('index', index)}
                 onDrop={(e) => {
                   const fromIndex = parseInt(e.dataTransfer.getData('index'));
