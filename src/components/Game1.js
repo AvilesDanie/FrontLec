@@ -197,7 +197,6 @@ const Game1Exercise = () => {
                 handleGameCompletion(true);
               } else {
                 handleGameCompletion(false);
-                alert('Please try again! The code is not correct.');
               }
             }}
           >

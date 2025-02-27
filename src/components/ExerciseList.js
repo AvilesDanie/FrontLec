@@ -76,7 +76,7 @@ const ExerciseList = () => {
         const isCompleted = isExerciseCompleted(exercise._id); // Verificar si el ejercicio está completado
         return (
           <li key={exercise.codewarsId} className="position-relative" id={`exercise-${exercise.codewarsId}`}>
-            <h3 id={`exercise-name-${exercise.codewarsId}`}>{exercise.name || "No Name Available"}</h3>
+            <h3 id={`exercise-name-${exercise.codewarsId}`} className="nombre-ejer">{exercise.name || "No Name Available"}</h3>
             <p id={`exercise-description-${exercise.codewarsId}`}>
               <div>
                 {/* Renderizamos el HTML usando dangerouslySetInnerHTML */}
